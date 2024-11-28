@@ -1,1 +1,3 @@
-__version__ = '0.0.0'
+""" Version of the module """
+
+__version__ = "0.0.0"
