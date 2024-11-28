@@ -1,0 +1,35 @@
+[build-system]
+requires = ["setuptools", "setuptools-scm"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "bigquery-utils"
+authors = [
+    {name = "Alessio Siciliano", email = "alessiosiciliano@outlook.it"},
+]
+description = "A utility library that enhances the official BigQuery Python client by providing additional tools for efficient query management, data processing, and automation. Designed for developers and data scientists, `bigquery-utils` simplifies working with Google BigQuery."
+readme = "README.md"
+requires-python = ">=3.10"
+keywords = ["python", "bigquery", "google-cloud", "datatransfer"]
+license = {text = "GPL-3.0"}
+classifiers = [
+    "Programming Language :: Python :: 3",
+    "Intended Audience :: Developers",
+    "Operating System :: OS Independent"
+]
+dependencies = [
+    "google-cloud-bigquery-datatransfer == 3.17.1",
+    "google-cloud-resource-manager == 1.13.1",
+    "google-cloud-bigquery == 3.27.0",
+]
+dynamic = ["version"]
+
+[tool.setuptools.dynamic]
+version = {attr = "bigquery-utils.__version__"}
+
+[tool.black]
+line-length = 79
+
+[tool.mypy]
+disallow_untyped_defs = true
+disallow_incomplete_defs = true
