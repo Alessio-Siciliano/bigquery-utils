@@ -55,7 +55,6 @@ class DataTransferClient(DataTransferServiceClient):
             credentials=credentials, client_options=client_options
         )
         self.cached_iterator: dict = {}
-        # ListTransferConfigsPager | None = None
 
     def list_transfer_configs(
         self,
