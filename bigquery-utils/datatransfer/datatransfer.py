@@ -12,6 +12,7 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
 )
 from google.api_core.retry import Retry
 from google.api_core.gapic_v1.method import _MethodDefault
+from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferConfig
 
 
 class DataTransferClient(DataTransferServiceClient):
@@ -53,6 +54,8 @@ class DataTransferClient(DataTransferServiceClient):
         super().__init__(
             credentials=credentials, client_options=client_options
         )
+        self.cached_iterator: dict = {}
+        # ListTransferConfigsPager | None = None
 
     def list_transfer_configs(
         self,
@@ -127,4 +130,39 @@ class DataTransferClient(DataTransferServiceClient):
                 ).owner_info
                 setattr(transfer_config, "owner_info", transfer_config_email)
 
+        self.cached_iterator[with_email] = transfer_configs_request_response
         return transfer_configs_request_response
+
+    def list_transfer_config_by_owner_email(
+        self, owner_email: str, project_id: str
+    ) -> list[TransferConfig]:
+        """Get ALL schedule queries of a given user.
+
+        Parameters
+        ----------
+        owner_email:
+            Owner of the scheduled query.
+
+        parent:
+            The BigQuery project id, it should be returned:
+                projects/{project_id}/locations/{location_id}
+
+        Returns
+        -------
+        list[TransferConfig]
+            List of all TransferConfig object
+
+        """
+
+        # If not cached, run it
+        if True not in self.cached_iterator:
+            self.cached_iterator[True] = self.list_transfer_configs(
+                parent=project_id, with_email=True
+            )
+
+        return list(
+            filter(
+                lambda x: x.owner_info.email == owner_email,
+                self.cached_iterator[True],
+            )
+        )
