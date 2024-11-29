@@ -13,6 +13,7 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
 from google.api_core.retry import Retry
 from google.api_core.gapic_v1.method import _MethodDefault
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferConfig
+from utils.string import String
 
 
 class DataTransferClient(DataTransferServiceClient):
@@ -55,6 +56,7 @@ class DataTransferClient(DataTransferServiceClient):
             credentials=credentials, client_options=client_options
         )
         self.cached_iterator: dict = {}
+        self.string_utils = String()
 
     def list_transfer_configs(
         self,
@@ -163,5 +165,51 @@ class DataTransferClient(DataTransferServiceClient):
             filter(
                 lambda x: x.owner_info.email == owner_email,
                 self.cached_iterator[True],
+            )
+        )
+
+    # IDEA: fare una get che ritorna anche le tabelle usate
+
+    def list_transfer_configs_by_table(
+        self, table_id: str, parent: str
+    ) -> list[TransferConfig]:
+        """List transfer configs by table in the query
+
+        Parameters
+        ----------
+        table_id:
+            Name of the table (not needed entire path).
+
+        parent:
+            The BigQuery project id, it should be returned:
+                projects/{project_id}/locations/{location_id}
+
+        Returns
+        -------
+        list[TransferConfig]
+            List of all TransferConfig object
+
+        """
+
+        # If not cached, run it
+        if len(self.cached_iterator.keys()) == 0:
+            self.cached_iterator[False] = self.list_transfer_configs(
+                parent=parent
+            )
+
+        return list(
+            filter(
+                lambda x: table_id.lower()
+                in [
+                    t.lower().split(".")[-1]
+                    for t in self.string_utils.extract_tables_from_query(
+                        x.params.get("query")
+                    )
+                ],
+                (
+                    self.cached_iterator[False]
+                    if False in self.cached_iterator
+                    else self.cached_iterator[True]
+                ),
             )
         )
