@@ -1,3 +1,3 @@
 """ Utils Classes """
 
-from .datatransfer import DataTransfer
+from .datatransfer import DataTransferClient

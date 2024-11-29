@@ -14,7 +14,7 @@ from google.api_core.retry import Retry
 from google.api_core.gapic_v1.method import _MethodDefault
 
 
-class DataTransfer(DataTransferServiceClient):
+class DataTransferClient(DataTransferServiceClient):
     """
     Custom class of DataTransferServiceClient
     """
