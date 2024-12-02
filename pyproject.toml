@@ -1,5 +1,8 @@
 [build-system]
-requires = ["setuptools", "setuptools-scm"]
+requires = [
+    "setuptools",
+    "setuptools-scm",
+]
 build-backend = "setuptools.build_meta"
 
 [project]
@@ -17,15 +20,19 @@ classifiers = [
     "Intended Audience :: Developers",
     "Operating System :: OS Independent"
 ]
-dependencies = [
-    "google-cloud-bigquery-datatransfer == 3.17.1",
-    "google-cloud-resource-manager == 1.13.1",
-    "google-cloud-bigquery == 3.27.0",
-]
-dynamic = ["version"]
+dynamic = ["version", "dependencies"]
+#dynamic = ["dependencies"]
+#version = "0.0.1"
 
 [tool.setuptools.dynamic]
-version = {attr = "bigquery-utils.__version__"}
+version = {attr = "bigquery_utils.__version__"}
+dependencies = {file = ["requirements.txt"]}
+
+[tool.setuptools.packages.find]
+#where = ["src"]
+include=["bigquery_utils*"]
+#include=["*"]
+namespaces = false
 
 [tool.black]
 line-length = 79
