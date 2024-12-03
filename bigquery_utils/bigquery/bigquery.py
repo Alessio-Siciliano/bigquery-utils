@@ -35,3 +35,23 @@ class BigQueryClient(Client):
             client_info,
             client_options,
         )
+
+    def get_estimated_bytes_by_query(self, query: str) -> float:
+        """Get billing GB for a given query
+
+        Parameters
+        ----------
+        query:
+            Query as string.
+
+        Returns
+        -------
+        Billed byte
+            Total processed byte
+
+        """
+        job_config = QueryJobConfig()
+        job_config.dry_run = True
+        job_config.use_query_cache = False
+        query_job = self.query(query=query, job_config=job_config)
+        return query_job.total_bytes_processed

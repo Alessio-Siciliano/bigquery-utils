@@ -5,3 +5,4 @@ from .custom_exceptions import (
     InvalidArgumentToFunction,
     ScheduledQueryIdWrongFormat,
 )
+from .numeric import Numeric
