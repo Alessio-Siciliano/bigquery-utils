@@ -13,7 +13,8 @@ from google.cloud.bigquery_datatransfer_v1.types.datatransfer import (
 from google.api_core.retry import Retry
 from google.api_core.gapic_v1.method import _MethodDefault
 from google.cloud.bigquery_datatransfer_v1.types.transfer import TransferConfig
-from utils.string import String
+
+from bigquery_utils.utils.string import String
 
 
 class DataTransferClient(DataTransferServiceClient):

@@ -1,7 +1,7 @@
 """ This module provides a set of useful functions to manipulate strings. """
 
 import re
-from .custom_exceptions import InvalidArgumentToFunction
+from bigquery_utils.utils.custom_exceptions import InvalidArgumentToFunction
 
 
 class String:
